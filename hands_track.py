@@ -41,14 +41,14 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0):
             success, img = capture.read()
             if not success:
                 fail_counter += 1
-                if (read_failures < 50):
+                if (fail_counter < 50):
                     continue
                 else:
                     print("Unable to capture from camera: too many failed attempts")
                     break
         except:
             fail_counter += 1
-            if (read_failures < 50):
+            if (fail_counter < 50):
                 continue
             else:
                 print("Unable to capture from camera: too many failed attempts")
@@ -64,6 +64,8 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0):
             hand_type = str.lower(hand_handedness[0].category_name)
             landmarks = detection_result.hand_landmarks[i]
             if not handsfound[hand_type]:
+                client.send_message(
+                        "/hands/" + hand_type + "/tracked/", 1)
                 for idx, lm in enumerate(landmarks):
                     client.send_message(
                         "/hands/" + hand_type + "/" + str(idx) + "/x/", lm.x)
@@ -73,10 +75,13 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0):
                         "/hands/" + hand_type + "/" + str(idx) + "/z/", lm.z)
                 handsfound[hand_type] = True
 
+        if not handsfound["left"]:
+            client.send_message("/hands/left/tracked/", 0)
+        if not handsfound["right"]:
+            client.send_message("/hands/right/tracked/", 0)
+
         client.send_message("/hands/tracked/",
                             len(detection_result.handedness))
-        client.send_message("/hands/tracked/left/", int(handsfound["left"]))
-        client.send_message("/hands/tracked/right/", int(handsfound["right"]))
 
         annotated_image = draw.draw_hands_landmarks_on_image(
             image.numpy_view(), detection_result)
