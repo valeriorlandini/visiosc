@@ -23,6 +23,7 @@ The following options can be specified:
 |--------------------------------|--------------------------------------------------|
 | `-a ADDRESS, --address ADDRESS`| Address to send OSC messages (default: `127.0.0.1`) |
 | `-d DEVICE, --device DEVICE`   | Index of the video device to use (default: `0`, if you have multiple video input devices you might have to try different values)  |
+| `-m MODE, --mode MODE`         | Send a simplified and named list of the landmarks (`0`, default) or send all the numbered landmarks (`1`)     |
 | `-p PORT, --port PORT`         | Port to send OSC messages (default: `8000`)     |
 | `-s WIDTH HEIGHT, --size WIDTH HEIGHT` | Width and height of the capture window |
 

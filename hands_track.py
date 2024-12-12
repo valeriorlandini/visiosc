@@ -18,10 +18,11 @@ import draw_landmarks as draw
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
+import numpy as np
 from pythonosc import udp_client
 
 
-def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0):
+def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, mode=0):
     base_options = python.BaseOptions(
         model_asset_path='models/hand_landmarker.task')
     options = vision.HandLandmarkerOptions(base_options=base_options,
@@ -31,6 +32,15 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0):
     capture = cv2.VideoCapture(device)
 
     client = udp_client.SimpleUDPClient(address, port)
+
+    hand_marks = {
+        "wrist": 0,
+        "thumb": 4,
+        "index": 8,
+        "middle": 12,
+        "ring": 16,
+        "pinky": 20
+    }
 
     fail_counter = 0
 
@@ -65,14 +75,37 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0):
             landmarks = detection_result.hand_landmarks[i]
             if not handsfound[hand_type]:
                 client.send_message(
-                        "/hands/" + hand_type + "/tracked/", 1)
-                for idx, lm in enumerate(landmarks):
+                    f"/hands/{hand_type}/tracked/", 1)
+                if mode:
+                    for idx, lm in enumerate(landmarks):
+                        client.send_message(
+                            f"/hands/{hand_type}/{idx}/x/", lm.x)
+                        client.send_message(
+                            f"/hands/{hand_type}/{idx}/y/", lm.y)
+                        client.send_message(
+                            f"/hands/{hand_type}/{idx}/z/", lm.z)
+                else:
+                    for key, idx in hand_marks.items():
+                        lm = landmarks[idx]
+                        client.send_message(
+                            f"/hands/{hand_type}/{key}/x/", lm.x)
+                        client.send_message(
+                            f"/hands/{hand_type}/{key}/y/", lm.y)
+                        client.send_message(
+                            f"/hands/{hand_type}/{key}/z/", lm.z)
+                    palm_around = []
+                    for i in (0, 5, 9, 13, 17):
+                        lm = landmarks[i]
+                        palm_around.append((lm.x, lm.y, lm.z))
+                    pa_array = np.array(palm_around)
+                    palm_coords = pa_array.mean(axis=0)
                     client.send_message(
-                        "/hands/" + hand_type + "/" + str(idx) + "/x/", lm.x)
+                        f"/hands/{hand_type}/palm/x/", palm_coords[0])
                     client.send_message(
-                        "/hands/" + hand_type + "/" + str(idx) + "/y/", lm.y)
+                        f"/hands/{hand_type}/palm/y/", palm_coords[1])
                     client.send_message(
-                        "/hands/" + hand_type + "/" + str(idx) + "/z/", lm.z)
+                        f"/hands/{hand_type}/palm/z/", palm_coords[2])
+
                 handsfound[hand_type] = True
 
         if not handsfound["left"]:
@@ -92,15 +125,19 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Hands landmark tracker to OSC")
+    parser = argparse.ArgumentParser(
+        description="Hands landmark tracker to OSC")
     parser.add_argument(
         '-a', '--address', help="address to send OSC messages (default 127.0.0.1)", default="127.0.0.1")
     parser.add_argument(
         '-d', '--device', help="index of the video device to use (default 0)", type=int, default=0)
+    parser.add_argument(
+        '-m', '--mode', help="send a simplified and named list of the landmarks (0, default) or send all the numbered landmarks (1)", type=int, default=0)
     parser.add_argument(
         '-p', '--port', help="port to send OSC messages (default 8000)", type=int, default=8000)
     parser.add_argument(
         '-s', '--size', help="width and height of the capture window", nargs=2, type=int, default=[640, 480], metavar=('WIDTH', 'HEIGHT'))
     args = parser.parse_args()
 
-    hand_track(args.size[0], args.size[1], args.address, args.port, args.device)
+    hand_track(args.size[0], args.size[1],
+               args.address, args.port, args.device, args.mode)
