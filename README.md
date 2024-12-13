@@ -13,7 +13,7 @@ Then, refer to the following guides for using the scripts (more are being added 
 
 ### Hands Tracking
 
-The script `hands_track.py` recognizes [21 hand landmarks](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/index#models), one left and one right. If two right or two left hands appear in the video stream, only one will be detected (you can easily modify this behavior by editing the code). The default mode does not pass to OSCstream the 21 landmarks, but the coordinates of the tips of the fingers, the wrist and the palm. This behavior can be changed with the appropriate option (see below). Launch it with:
+The script `hands_track.py` recognizes [21 hand landmarks](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/index#models), one left and one right. If two right or two left hands appear in the video stream, only one will be detected (you can easily modify this behavior by editing the code). The default mode does not pass to OSC stream the 21 landmarks, but the coordinates of the tips of the fingers, the wrist and the palm. This behavior can be changed with the appropriate option (see below). Launch it with:
 
 `python hands_track.py`
 
