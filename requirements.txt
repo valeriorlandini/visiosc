@@ -2,3 +2,4 @@ argparse
 mediapipe
 numpy
 opencv-python
+python-osc

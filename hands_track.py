@@ -41,12 +41,13 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
         "ring": 16,
         "pinky": 20
     }
-
+    
     fail_counter = 0
 
+    capture.set(3, width)
+    capture.set(4, height)
+
     while cv2.waitKey(1) == -1:
-        capture.set(3, width)
-        capture.set(4, height)
         try:
             success, img = capture.read()
             if not success:
@@ -64,12 +65,14 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
                 print("Unable to capture from camera: too many failed attempts")
                 break
         fail_counter = 0
+
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        
         image = mp.Image(image_format=mp.ImageFormat.SRGB, data=imgRGB)
         detection_result = detector.detect(image)
 
         handsfound = {"left": False, "right": False}
-
+        
         for i, hand_handedness in enumerate(detection_result.handedness):
             hand_type = str.lower(hand_handedness[0].category_name)
             landmarks = detection_result.hand_landmarks[i]
@@ -115,7 +118,7 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
 
         client.send_message("/hands/tracked/",
                             len(detection_result.handedness))
-
+        
         annotated_image = draw.draw_hands_landmarks_on_image(
             image.numpy_view(), detection_result)
         cv2.imshow("Hands Tracking", cv2.cvtColor(
