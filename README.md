@@ -28,7 +28,7 @@ The script `hands_track.py` recognizes [21 hand landmarks](https://ai.google.dev
 
 `python hands_track.py`
 
-### Hands Tracking
+### Face Tracking
 
 The script `face_track.py` recognizes [478 face landmarks](https://storage.googleapis.com/mediapipe-assets/documentation/mediapipe_face_landmark_fullsize.png) on the face (one face is detected, this can optionally be changed in the code). The default mode does not pass to OSC stream the 478 landmarks, but the coordinates of the main parts of the face (chin, lips, mouth, cheeks, nose, eyes, eyebrows, forehead). This behavior can be changed with the appropriate option (see options table). Launch it with:
 
