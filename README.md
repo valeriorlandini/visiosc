@@ -9,7 +9,7 @@ First of all, install the necessary dependencies with:
 
 `pip install -r requirements.txt`
 
-Then, refer to the following guides for using the scripts (more are being added soon!).
+Then, refer to the following guides for using the scripts.
 Coordinates for `x` and `y` are always inside [0.0, 1.0] range, with the origin being the left upper corner (camera image is automatically mirrored).
 
 For each script, the following options can be specified:
@@ -33,3 +33,11 @@ The script `hands_track.py` recognizes [21 hand landmarks](https://ai.google.dev
 The script `face_track.py` recognizes [478 face landmarks](https://storage.googleapis.com/mediapipe-assets/documentation/mediapipe_face_landmark_fullsize.png) on the face (one face is detected, this can optionally be changed in the code). The default mode does not pass to OSC stream the 478 landmarks, but the coordinates of the main parts of the face (chin, lips, mouth, cheeks, nose, eyes, eyebrows, forehead). This behavior can be changed with the appropriate option (see options table). Launch it with:
 
 `python face_track.py`
+
+### Pose Tracking
+
+The script `pose_track.py` recognizes [33 pose landmarks](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker#models) on whole body. The default mode does not pass to OSC stream the numbered 33 landmarks, but the named body parts minus some redundant ones but plus the torso and mouth centres. This behavior can be changed with the appropriate option (see options table). Launch it with:
+
+`python pose_track.py`
+
+Pose tracking works even if a whole figure is not detected, and tries to guess the coordinates of the out-of-screen body parts. For this reason, some coordinates may be outside [0.0, 1.0] range. The script has a `-o` / `--out` option that if set to `0` filters out all out-of-screen coordinates, if set to `1` clamps all the coordinates inside [0.0, 1.0] range and if set to `2` (which is the default) passes all the coordinates as they are.

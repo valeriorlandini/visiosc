@@ -43,7 +43,7 @@ def face_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
         "leftcheek": 425,
         "righteyebrow": 52,
         "lefteyebrow": 282,
-        "rightteye": 468,
+        "righteye": 468,
         "lefteye": 473,
         "forehead": 151
     }
