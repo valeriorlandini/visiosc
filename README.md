@@ -36,7 +36,7 @@ The script `face_track.py` recognizes [478 face landmarks](https://storage.googl
 
 ### Pose Tracking
 
-The script `pose_track.py` recognizes [33 pose landmarks](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker#models) on whole body. The default mode does not pass to OSC stream the numbered 33 landmarks, but the named body parts minus some redundant ones but plus the torso and mouth centres. This behavior can be changed with the appropriate option (see options table). Launch it with:
+The script `pose_track.py` recognizes [33 pose landmarks](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker#pose_landmarker_model) on whole body. The default mode does not pass to OSC stream the numbered 33 landmarks, but the named body parts minus some redundant ones but plus the torso and mouth centres. This behavior can be changed with the appropriate option (see options table). Launch it with:
 
 `python pose_track.py`
 
