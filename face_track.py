@@ -82,18 +82,18 @@ def face_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
             if mode:
                 for idx, lm in enumerate(detection_result.face_landmarks[0]):
                     client.send_message(
-                        f"/face/{idx}/x/", lm.x)
+                        f"/face/{idx}/x/", 1.0 - lm.x)
                     client.send_message(
-                        f"/face/{idx}/y/", lm.y)
+                        f"/face/{idx}/y/", 1.0 - lm.y)
                     client.send_message(
                         f"/face/{idx}/z/", lm.z)
             else:
                 for key, idx in face_marks.items():
                     lm = detection_result.face_landmarks[0][idx]
                     client.send_message(   
-                        f"/face/{key}/x/", lm.x)
+                        f"/face/{key}/x/", 1.0 - lm.x)
                     client.send_message(
-                        f"/face/{key}/y/", lm.y)
+                        f"/face/{key}/y/", 1.0 - lm.y)
                     client.send_message(
                         f"/face/{key}/z/", lm.z)
                 mouth_around = []
@@ -103,9 +103,9 @@ def face_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
                 ma_array = np.array(mouth_around)
                 mouth_coords = ma_array.mean(axis=0)
                 client.send_message(
-                    f"/face/mouth/x/", mouth_coords[0])
+                    f"/face/mouth/x/", 1.0 - mouth_coords[0])
                 client.send_message(
-                    f"/face/mouth/y/", mouth_coords[1])
+                    f"/face/mouth/y/", 1.0 - mouth_coords[1])
                 client.send_message(
                     f"/face/mouth/z/", mouth_coords[2])
 

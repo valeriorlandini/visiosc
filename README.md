@@ -10,7 +10,7 @@ First of all, install the necessary dependencies with:
 `pip install -r requirements.txt`
 
 Then, refer to the following guides for using the scripts.
-Coordinates for `x` and `y` are always inside [0.0, 1.0] range, with the origin being the left upper corner (camera image is automatically mirrored).
+Coordinates for `x` and `y` are always inside [0.0, 1.0] range, with the origin being the left bottom corner (camera image is automatically mirrored).
 
 For each script, the following options can be specified:
 

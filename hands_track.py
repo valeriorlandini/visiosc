@@ -82,18 +82,18 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
                 if mode:
                     for idx, lm in enumerate(landmarks):
                         client.send_message(
-                            f"/hands/{hand_type}/{idx}/x/", lm.x)
+                            f"/hands/{hand_type}/{idx}/x/", 1.0 - lm.x)
                         client.send_message(
-                            f"/hands/{hand_type}/{idx}/y/", lm.y)
+                            f"/hands/{hand_type}/{idx}/y/", 1.0 - lm.y)
                         client.send_message(
                             f"/hands/{hand_type}/{idx}/z/", lm.z)
                 else:
                     for key, idx in hand_marks.items():
                         lm = landmarks[idx]
                         client.send_message(
-                            f"/hands/{hand_type}/{key}/x/", lm.x)
+                            f"/hands/{hand_type}/{key}/x/", 1.0 - lm.x)
                         client.send_message(
-                            f"/hands/{hand_type}/{key}/y/", lm.y)
+                            f"/hands/{hand_type}/{key}/y/", 1.0 - lm.y)
                         client.send_message(
                             f"/hands/{hand_type}/{key}/z/", lm.z)
                     palm_around = []
@@ -103,9 +103,9 @@ def hand_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
                     pa_array = np.array(palm_around)
                     palm_coords = pa_array.mean(axis=0)
                     client.send_message(
-                        f"/hands/{hand_type}/palm/x/", palm_coords[0])
+                        f"/hands/{hand_type}/palm/x/", 1.0 - palm_coords[0])
                     client.send_message(
-                        f"/hands/{hand_type}/palm/y/", palm_coords[1])
+                        f"/hands/{hand_type}/palm/y/", 1.0 - palm_coords[1])
                     client.send_message(
                         f"/hands/{hand_type}/palm/z/", palm_coords[2])
 
