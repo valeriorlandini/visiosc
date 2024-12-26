@@ -124,9 +124,9 @@ def pose_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
                         x = min(0.0, max(x, 1.0))
                         y = min(0.0, max(y, 1.0))
                     client.send_message(
-                        f"/pose/{key}/x/", x)
+                        f"/pose/{key}/x/", 1.0 - x)
                     client.send_message(
-                        f"/pose/{key}/y/", y)
+                        f"/pose/{key}/y/", 1.0 - y)
                     client.send_message(
                         f"/pose/{key}/z/", z)
 
@@ -144,9 +144,9 @@ def pose_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
                         x = min(0.0, max(x, 1.0))
                         y = min(0.0, max(y, 1.0))
                     client.send_message(
-                        f"/pose/mouth/x/", mouth_coords[0])
+                        f"/pose/mouth/x/", 1.0 - mouth_coords[0])
                     client.send_message(
-                        f"/pose/mouth/y/", mouth_coords[1])
+                        f"/pose/mouth/y/", 1.0 - mouth_coords[1])
                     client.send_message(
                         f"/pose/mouth/z/", mouth_coords[2])
 
@@ -164,9 +164,9 @@ def pose_track(width=640, height=480, address="127.0.0.1", port=8000, device=0, 
                         x = min(0.0, max(x, 1.0))
                         y = min(0.0, max(y, 1.0))
                     client.send_message(
-                        f"/pose/torso/x/", x)
+                        f"/pose/torso/x/", 1.0 - x)
                     client.send_message(
-                        f"/pose/torso/y/", y)
+                        f"/pose/torso/y/", 1.0 - y)
                     client.send_message(
                         f"/pose/torso/z/", z)
 
