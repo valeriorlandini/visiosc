@@ -5,7 +5,11 @@ A set of Python scripts that capture video input, recognize body landmarks, and 
 
 ## Usage
 
-First of all, install the necessary dependencies with:
+Download the latest version:
+
+`git clone https://github.com/valeriorlandini/visiosc.git` (or `cd visiosc && git pull` to update an existing download)
+
+Once inside the `visiosc` folder, install the necessary dependencies with:
 
 `pip install -r requirements.txt`
 
